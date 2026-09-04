@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#0f1720">
+<title>Social Lab — People, Power & Relationships</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div id="gate" class="gate hidden">
+  <div class="gate-card">
+    <div class="logo-mark">SL</div>
+    <p class="kicker">PRIVATE PRACTICE SPACE</p>
+    <h1>This Social Lab is shared by invitation.</h1>
+    <p class="muted">Open the full invitation link, or paste the access key you received.</p>
+    <input id="gateKey" class="field" placeholder="Access key">
+    <button class="button primary wide" onclick="unlockGate()">Enter Social Lab</button>
+    <p id="gateError" class="error hidden">That key does not match this build.</p>
+  </div>
+</div>
+
+<div id="app">
+  <header class="topbar">
+    <button class="brand" onclick="navigate('home')">
+      <span class="logo-mark small">SL</span>
+      <span>SOCIAL LAB</span>
+    </button>
+    <nav class="nav">
+      <button data-nav="home" onclick="navigate('home')">Scenarios</button>
+      <button data-nav="network" onclick="navigate('network')">Relationship Map</button>
+      <button data-nav="patterns" onclick="navigate('patterns')">My Pattern</button>
+    </nav>
+    <div class="header-actions">
+      <span class="progress-chip" id="progressChip">0 / 20</span>
+      <button class="icon-button" title="Settings" onclick="openSettings()">⚙</button>
+    </div>
+  </header>
+
+  <main id="homeView" class="view">
+    <section class="hero">
+      <div class="hero-copy">
+        <p class="kicker">PEOPLE · POWER · RELATIONSHIPS</p>
+        <h1>Every interaction changes the room.</h1>
+        <p class="hero-text">Practice difficult conversations, discover the social meaning hidden inside ordinary wording, and watch small choices reshape trust, face, reputation and future cooperation.</p>
+        <div class="hero-actions">
+          <button class="button primary" onclick="startRecommended()">Continue training</button>
+          <button class="button ghost" onclick="navigate('network')">See your relationship map</button>
+        </div>
+      </div>
+      <div class="hero-visual">
+        <div class="orbit">
+          <div class="orbital-line line-a"></div>
+          <div class="orbital-line line-b"></div>
+          <div class="person-node node-main">M</div>
+          <div class="person-node node-a">陈</div>
+          <div class="person-node node-b">刘</div>
+          <div class="person-node node-c">W</div>
+          <div class="person-node node-d">A</div>
+        </div>
+        <div class="visual-caption">Relationships remember.</div>
+      </div>
+    </section>
+
+    <section class="insight-strip">
+      <div><span class="insight-num">01</span><b>Rank what you want.</b><small>Most social mistakes begin with an unexamined objective.</small></div>
+      <div><span class="insight-num">02</span><b>Say what you would really say.</b><small>No multiple choice. Your actual wording matters.</small></div>
+      <div><span class="insight-num">03</span><b>Watch the consequences spread.</b><small>People interpret, remember, tell others, and act later.</small></div>
+    </section>
+
+    <section class="section-head">
+      <div>
+        <p class="kicker">SEASON ONE</p>
+        <h2>From one conversation to a social system.</h2>
+      </div>
+      <div class="level-filter" id="levelFilter"></div>
+    </section>
+
+    <section class="scenario-grid" id="scenarioGrid"></section>
+  </main>
+
+  <main id="scenarioView" class="view hidden">
+    <div class="scenario-shell">
+      <aside class="scenario-side">
+        <button class="back-link" onclick="navigate('home')">← All scenarios</button>
+        <div class="scenario-number" id="scenarioNumber"></div>
+        <h3 id="scenarioSkill"></h3>
+        <div class="people-list" id="peopleList"></div>
+        <div class="signal-panel">
+          <p class="mini-heading">LIVE SOCIAL SIGNALS</p>
+          <div id="signalMeters"></div>
+        </div>
+      </aside>
+
+      <section class="scenario-main">
+        <div class="stage-card" id="stageCard"></div>
+      </section>
+    </div>
+  </main>
+
+  <main id="networkView" class="view hidden">
+    <section class="page-intro">
+      <p class="kicker">RELATIONSHIP MAP</p>
+      <h1>Your choices do not disappear after the conversation.</h1>
+      <p class="hero-text">This map tracks recurring people and how your interactions alter trust, warmth, respect, openness and perceived threat over time.</p>
+    </section>
+    <section class="network-layout">
+      <div class="network-canvas" id="networkCanvas"></div>
+      <aside class="network-detail" id="networkDetail"></aside>
+    </section>
+    <section class="memory-feed">
+      <div class="section-head compact"><div><p class="kicker">SOCIAL MEMORY</p><h2>What the room remembers</h2></div></div>
+      <div id="memoryFeed"></div>
+    </section>
+  </main>
+
+  <main id="patternsView" class="view hidden">
+    <section class="page-intro">
+      <p class="kicker">YOUR SOCIAL OPERATING PATTERN</p>
+      <h1>Not a personality test. A record of repeated trade-offs.</h1>
+      <p class="hero-text">The report looks at what your wording repeatedly optimizes — and what costs may be created accidentally.</p>
+    </section>
+    <section id="patternSummary"></section>
+    <section class="pattern-deep" id="patternDeep"></section>
+  </main>
+</div>
+
+<div id="toast" class="toast hidden"></div>
+
+<div id="settingsModal" class="modal hidden" onclick="modalBackdrop(event)">
+  <div class="modal-card">
+    <div class="modal-head">
+      <div><p class="kicker">SETTINGS</p><h2>Social Lab</h2></div>
+      <button class="icon-button" onclick="closeSettings()">✕</button>
+    </div>
+    <label class="label">Learner name</label>
+    <input class="field" id="learnerName" value="Matthias">
+    <label class="label">Practice mode</label>
+    <select class="field" id="practiceMode">
+      <option value="china">Chinese professional contexts</option>
+      <option value="mixed">Mixed international contexts</option>
+    </select>
+    <div class="setting-note">The simulator uses cultural context as a probability shift, never as a rule about how an individual “must” react.</div>
+    <div class="modal-actions">
+      <button class="button ghost" onclick="resetProgress()">Reset progress</button>
+      <button class="button primary" onclick="saveSettings()">Save</button>
+    </div>
+  </div>
+</div>
+
+<script src="data.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
