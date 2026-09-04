@@ -1,7 +1,7 @@
 
 const CONFIG = {
-  ACCESS_MODE: "off", // "off" or "link-key"
-  ACCESS_KEY: "replace-with-a-long-random-string"
+  ACCESS_MODE: "link-key", // "off" or "link-key"
+  ACCESS_KEY: "aFAiHnGF4F9UBMMJdH-V8wmRwue72CgkIrZHFhCF8JQ"
 };
 
 const defaultState = {
